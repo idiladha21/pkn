@@ -1,0 +1,1937 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LMS Pancasila Kelas 6 — Hierarki Struktur Pemerintahan (Model PBL)</title>
+  <!-- Memuat Tailwind CSS untuk styling responsif dan modern -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Memuat Font Inter dari Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#FAF5FF',
+              100: '#F3E8FF',
+              200: '#E9D5FF',
+              300: '#D8B4FE',
+              400: '#C084FC',
+              500: '#A855F7',
+              600: '#7C3AED',
+              700: '#6D28D9',
+              800: '#5B21B6',
+              900: '#4C1D95',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Gaya dasar khusus untuk kenyamanan mata anak SD kelas 6 (Light Mode Minimalis Ungu) */
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #FAF8FF;
+      color: #1E1B4B;
+      overflow-x: hidden;
+    }
+
+    /* Animasi transisi halus antar halaman */
+    .page-section {
+      animation: fadeSlideUp 0.35s ease-out forwards;
+    }
+
+    @keyframes fadeSlideUp {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Animasi getar lembut untuk validasi password salah */
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-6px); }
+      40%, 80% { transform: translateX(6px); }
+    }
+
+    .animate-shake {
+      animation: shake 0.35s ease-in-out;
+    }
+
+    /* Styling sel spreadsheet agar rapi dan mudah dibaca */
+    .spreadsheet-table th {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-purple-200 selection:text-purple-900">
+
+  <!-- ==================== HEADER JUDUL APLIKASI ==================== -->
+  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-purple-100 shadow-sm">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-3.5 flex flex-col md:flex-row items-center justify-between gap-3">
+      <!-- Identitas & Judul LMS -->
+      <div class="flex items-center gap-3 w-full md:w-auto justify-between md:justify-start">
+        <button onclick="navigateTo('menu')" class="flex items-center gap-3 text-left group focus:outline-none">
+          <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-purple-600 to-indigo-600 flex items-center justify-center text-white shadow-md shadow-purple-200 group-hover:scale-105 transition-transform">
+            <!-- Ikon Gedung Pemerintahan / Edukasi SVG -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" />
+            </svg>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-purple-100 text-purple-700">Kelas 6 SD • PBL</span>
+            </div>
+            <h1 class="text-base sm:text-lg font-extrabold text-slate-900 leading-tight group-hover:text-purple-700 transition-colors">
+              LMS Struktur Pemerintahan Indonesia
+            </h1>
+          </div>
+        </button>
+      </div>
+
+      <!-- Navigasi Utama -->
+      <nav aria-label="Navigasi Utama" class="flex items-center gap-1.5 sm:gap-2 w-full md:w-auto overflow-x-auto pb-1 md:pb-0 justify-start md:justify-end">
+        <button id="nav-menu" onclick="navigateTo('menu')" class="nav-btn px-3.5 py-2 rounded-xl text-sm font-semibold transition-all whitespace-nowrap flex items-center gap-1.5 bg-purple-600 text-white shadow-sm">
+          <span>🏠 Menu</span>
+        </button>
+        <button id="nav-materi" onclick="navigateTo('materi')" class="nav-btn px-3.5 py-2 rounded-xl text-sm font-semibold transition-all whitespace-nowrap flex items-center gap-1.5 text-slate-600 hover:bg-purple-50 hover:text-purple-700">
+          <span>📖 Materi</span>
+        </button>
+        <button id="nav-evaluasi" onclick="navigateTo('evaluasi')" class="nav-btn px-3.5 py-2 rounded-xl text-sm font-semibold transition-all whitespace-nowrap flex items-center gap-1.5 text-slate-600 hover:bg-purple-50 hover:text-purple-700">
+          <span>📝 Evaluasi</span>
+        </button>
+        <button id="nav-spreadsheet" onclick="navigateTo('spreadsheet')" class="nav-btn px-3.5 py-2 rounded-xl text-sm font-semibold transition-all whitespace-nowrap flex items-center gap-1.5 text-slate-600 hover:bg-purple-50 hover:text-purple-700">
+          <span>📊 Spreadsheet</span>
+          <span id="badge-count" class="ml-0.5 px-1.5 py-0.2 text-xs rounded-full bg-purple-100 text-purple-700 font-bold">0</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ==================== KONTEN UTAMA ==================== -->
+  <main class="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8">
+
+    <!-- =========================================================
+         HALAMAN 1: MENU UTAMA (BERANDA)
+         ========================================================= -->
+    <section id="view-menu" class="page-section space-y-6">
+      <!-- Banner Sambutan & Tujuan Pembelajaran -->
+      <div class="bg-white rounded-3xl p-6 sm:p-8 border border-purple-100 shadow-sm relative overflow-hidden">
+        <div class="absolute -right-12 -top-12 w-48 h-48 rounded-full bg-purple-50 pointer-events-none"></div>
+        <div class="absolute right-20 -bottom-16 w-36 h-36 rounded-full bg-indigo-50/70 pointer-events-none"></div>
+
+        <div class="relative z-10 max-w-3xl space-y-3">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-50 border border-purple-200 text-purple-700 text-xs sm:text-sm font-semibold">
+            <span>✨ Pendidikan Pancasila • Kurikulum Merdeka</span>
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 leading-snug">
+            Selamat Datang, Sobat Hebat Kelas 6! 👋
+          </h2>
+          <p class="text-slate-600 text-sm sm:text-base leading-relaxed">
+            Mari belajar mengenal bagaimana negara kita diatur dengan rapi dari tingkat nasional hingga lingkungan tempat tinggalmu melalui pendekatan <strong class="text-purple-700">Problem-Based Learning (PBL)</strong>.
+          </p>
+
+          <!-- Kotak Capaian / Tujuan Pembelajaran -->
+          <div class="mt-4 p-4 rounded-2xl bg-purple-50/80 border border-purple-200/80">
+            <p class="text-xs font-bold uppercase tracking-wider text-purple-700 mb-1">🎯 Tujuan Pembelajaran:</p>
+            <p class="text-sm sm:text-base font-medium text-slate-800">
+              Siswa mampu mengidentifikasi komponen-komponen utama hierarki struktur pemerintahan dari pusat ke daerah terendah melalui model Problem-Based Learning (PBL).
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Kartu Fitur Utama pada Halaman Menu: Materi & Evaluasi -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Kartu Fitur 1: Materi -->
+        <div class="bg-white rounded-3xl p-6 sm:p-7 border border-purple-100 shadow-sm hover:shadow-md hover:border-purple-300 transition-all flex flex-col justify-between group">
+          <div class="space-y-4">
+            <div class="flex items-center justify-between">
+              <div class="w-14 h-14 rounded-2xl bg-purple-100 text-purple-700 flex items-center justify-center text-2xl group-hover:scale-105 transition-transform">
+                📚
+              </div>
+              <span class="px-3 py-1 rounded-full bg-purple-50 text-purple-700 text-xs font-bold">Langkah 1 • Eksplorasi</span>
+            </div>
+            <div>
+              <h3 class="text-xl font-bold text-slate-900 group-hover:text-purple-700 transition-colors">
+                Fitur Materi Pembelajaran (PBL)
+              </h3>
+              <p class="text-slate-600 text-sm mt-2 leading-relaxed">
+                Tonton video pembelajaran YouTube di bagian atas materi, pecahkan studi kasus nyata warga desa, dan pelajari urutan pemerintahan mulai dari <strong>Presiden</strong> hingga <strong>Kepala Desa / Lurah & RT/RW</strong>.
+              </p>
+            </div>
+            <ul class="space-y-1.5 text-xs sm:text-sm text-slate-600 pt-1">
+              <li class="flex items-center gap-2"><span class="text-purple-600 font-bold">✓</span> Link & Video Pembelajaran YouTube</li>
+              <li class="flex items-center gap-2"><span class="text-purple-600 font-bold">✓</span> Studi Kasus Nyata Berbasis Masalah (PBL)</li>
+              <li class="flex items-center gap-2"><span class="text-purple-600 font-bold">✓</span> Bagan Hierarki Pemerintahan Pusat ke Daerah Terendah</li>
+            </ul>
+          </div>
+
+          <button onclick="navigateTo('materi')" class="mt-6 w-full py-3.5 px-5 rounded-2xl bg-purple-600 hover:bg-purple-700 active:scale-[0.99] text-white font-bold text-sm sm:text-base shadow-sm shadow-purple-200 transition-all flex items-center justify-center gap-2">
+            <span>Buka Halaman Materi</span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+            </svg>
+          </button>
+        </div>
+
+        <!-- Kartu Fitur 2: Evaluasi -->
+        <div class="bg-white rounded-3xl p-6 sm:p-7 border border-purple-100 shadow-sm hover:shadow-md hover:border-purple-300 transition-all flex flex-col justify-between group">
+          <div class="space-y-4">
+            <div class="flex items-center justify-between">
+              <div class="w-14 h-14 rounded-2xl bg-indigo-100 text-indigo-700 flex items-center justify-center text-2xl group-hover:scale-105 transition-transform">
+                🏆
+              </div>
+              <span class="px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 text-xs font-bold">Langkah 2 • Uji Pemahaman</span>
+            </div>
+            <div>
+              <h3 class="text-xl font-bold text-slate-900 group-hover:text-indigo-700 transition-colors">
+                Fitur Evaluasi & Pengumpulan Tugas
+              </h3>
+              <p class="text-slate-600 text-sm mt-2 leading-relaxed">
+                Isi identitas dirimu, lalu kerjakan <strong>10 soal pilihan ganda</strong> yang diacak secara otomatis dari <strong>35 bank soal</strong>. Dapatkan skor (+20 tiap jawaban benar) dan pesan umpan balik langsung!
+              </p>
+            </div>
+            <ul class="space-y-1.5 text-xs sm:text-sm text-slate-600 pt-1">
+              <li class="flex items-center gap-2"><span class="text-indigo-600 font-bold">✓</span> 10 Soal Acak dari 35 Bank Soal Terlengkap</li>
+              <li class="flex items-center gap-2"><span class="text-indigo-600 font-bold">✓</span> Tombol Reset Stage & Umpan Balik Dinamis</li>
+              <li class="flex items-center gap-2"><span class="text-indigo-600 font-bold">✓</span> Terhubung Otomatis ke Spreadsheet Nilai Guru</li>
+            </ul>
+          </div>
+
+          <button onclick="navigateTo('evaluasi')" class="mt-6 w-full py-3.5 px-5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 active:scale-[0.99] text-white font-bold text-sm sm:text-base shadow-sm shadow-indigo-200 transition-all flex items-center justify-center gap-2">
+            <span>Mulai Halaman Evaluasi</span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Bar Informasi Rekapitulasi Nilai untuk Guru / Admin -->
+      <div class="bg-white rounded-2xl p-5 border border-purple-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div class="flex items-center gap-3.5">
+          <div class="w-11 h-11 rounded-xl bg-purple-50 border border-purple-200 flex items-center justify-center text-xl shrink-0">
+            📋
+          </div>
+          <div>
+            <h4 class="font-bold text-slate-800 text-sm sm:text-base">Rekapitulasi Tugas & Unduh Spreadsheet (Khusus Guru/Admin)</h4>
+            <p class="text-xs sm:text-sm text-slate-500">Pantau hasil skor siswa (+20 benar, 0 salah), reset gangguan pengerjaan, hapus data ganda, dan unduh file spreadsheet.</p>
+          </div>
+        </div>
+        <button onclick="navigateTo('spreadsheet')" class="px-4 py-2.5 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-700 font-semibold text-sm transition-colors whitespace-nowrap border border-purple-200">
+          Lihat Spreadsheet →
+        </button>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         HALAMAN 2: HALAMAN MATERI (MODEL PBL + LINK YOUTUBE DI ATAS)
+         ========================================================= -->
+    <section id="view-materi" class="page-section hidden space-y-6">
+      <!-- Breadcrumb / Top Action -->
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <button onclick="navigateTo('menu')" class="inline-flex items-center gap-2 text-sm font-semibold text-purple-700 hover:text-purple-900 bg-white px-4 py-2 rounded-xl border border-purple-100 shadow-sm">
+          <span>← Kembali ke Menu</span>
+        </button>
+        <span class="px-3.5 py-1.5 rounded-full bg-purple-100 text-purple-800 text-xs font-bold">
+          Model Pembelajaran: Problem-Based Learning (PBL)
+        </span>
+      </div>
+
+      <!-- BAGIAN ATAS PENJABARAN MATERI: LINK & VIDEO YOUTUBE -->
+      <div class="bg-white rounded-3xl p-6 sm:p-7 border-2 border-purple-200 shadow-sm space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-purple-100 pb-4">
+          <div class="flex items-center gap-3">
+            <div class="w-11 h-11 rounded-2xl bg-red-50 text-red-600 border border-red-100 flex items-center justify-center shrink-0">
+              <!-- Ikon YouTube SVG -->
+              <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
+                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+              </svg>
+            </div>
+            <div>
+              <span class="text-xs font-bold uppercase tracking-wider text-purple-600">Sumber Belajar Video (Bagian Atas Materi)</span>
+              <h2 class="text-lg sm:text-xl font-extrabold text-slate-900">Tautan Video YouTube Pembelajaran</h2>
+            </div>
+          </div>
+          <button onclick="toggleVideoEmbed()" id="btn-toggle-video" class="px-4 py-2 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-700 text-xs sm:text-sm font-bold border border-purple-200 transition-colors self-start sm:self-auto">
+            🎬 Putar Video di Halaman Ini
+          </button>
+        </div>
+
+        <p class="text-sm text-slate-600">
+          Sebelum membaca penjabaran materi di bawah, silakan klik <strong>tautan YouTube</strong> berikut untuk menyimak penjelasan visual mengenai struktur pemerintahan Indonesia dari pusat hingga daerah terendah:
+        </p>
+
+        <!-- Daftar Link YouTube Edukasi yang Dapat Diklik Langsung -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+          <a href="https://www.youtube.com/watch?v=tDW7gVaaVzo" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-4 rounded-2xl bg-purple-50/70 hover:bg-purple-100/80 border border-purple-200 transition-all group">
+            <div class="flex items-start gap-3 pr-2">
+              <span class="text-xl mt-0.5">▶️</span>
+              <div>
+                <p class="font-bold text-sm text-slate-900 group-hover:text-purple-800">Struktur Pemerintahan Indonesia dari Desa ke Pusat</p>
+                <p class="text-xs text-purple-700 underline break-all mt-0.5">https://www.youtube.com/watch?v=tDW7gVaaVzo</p>
+              </div>
+            </div>
+            <span class="text-xs font-bold px-2.5 py-1 rounded-lg bg-white text-purple-700 border border-purple-200 shrink-0">Buka ↗</span>
+          </a>
+
+          <a href="https://www.youtube.com/watch?v=GPMRU0dbn3A" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-4 rounded-2xl bg-purple-50/70 hover:bg-purple-100/80 border border-purple-200 transition-all group">
+            <div class="flex items-start gap-3 pr-2">
+              <span class="text-xl mt-0.5">▶️</span>
+              <div>
+                <p class="font-bold text-sm text-slate-900 group-hover:text-purple-800">Mengenal Lembaga Pemerintahan - PPKn Kelas 6 SD</p>
+                <p class="text-xs text-purple-700 underline break-all mt-0.5">https://www.youtube.com/watch?v=GPMRU0dbn3A</p>
+              </div>
+            </div>
+            <span class="text-xs font-bold px-2.5 py-1 rounded-lg bg-white text-purple-700 border border-purple-200 shrink-0">Buka ↗</span>
+          </a>
+        </div>
+
+        <!-- Pemutar Video Opsional -->
+        <div id="youtube-embed-box" class="hidden pt-2">
+          <div class="aspect-video w-full rounded-2xl overflow-hidden border border-purple-200 bg-slate-900">
+            <iframe class="w-full h-full" src="https://www.youtube.com/embed/tDW7gVaaVzo" title="Struktur Pemerintahan Indonesia dari Desa ke Pusat" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <p class="text-xs text-slate-500 mt-2 text-center">Jika video tidak tampil karena pembatasan jaringan sekolah, silakan klik tautan YouTube ungu di atas untuk membukanya di tab baru.</p>
+        </div>
+      </div>
+
+      <!-- TAHAP 1 PBL: ORIENTASI MASALAH -->
+      <div class="bg-amber-50/80 rounded-3xl p-6 sm:p-7 border border-amber-200 space-y-3">
+        <div class="flex items-center gap-2.5">
+          <span class="px-3 py-1 rounded-full bg-amber-200/80 text-amber-900 text-xs font-extrabold uppercase">Sintaks PBL 1 • Orientasi Masalah</span>
+        </div>
+        <h3 class="text-xl font-extrabold text-slate-900">
+          🔍 Studi Kasus: "Ke Mana Warga Harus Melapor?"
+        </h3>
+        <p class="text-sm sm:text-base text-slate-700 leading-relaxed">
+          Perhatikan cerita berikut: <em>"Hujan deras membuat jembatan kecil penghubung antar-RT di Desa Sukamaju rusak berat, dan beberapa dokumen kependudukan (KTP/KK) milik keluarga Pak Budi ikut hanyut terbawa air. Pak Budi ingin melaporkan perbaikan jembatan lingkungan sekaligus mengurus pembuatan KTP baru."</em>
+        </p>
+        <div class="p-4 rounded-2xl bg-white border border-amber-200 text-sm text-slate-700">
+          <strong class="text-amber-900">Pertanyaan Pemantik Masalah:</strong><br/>
+          Menurutmu, siapa pemimpin wilayah yang paling dekat dengan rumah Pak Budi untuk dimintai surat pengantar pertama kali? Dan hingga ke tingkat pemerintahan mana saja urusan tersebut diteruskan dari daerah terendah sampai pusat? Mari kita pelajari susunannya di bawah ini!
+        </div>
+      </div>
+
+      <!-- TAHAP 2 PBL: PENJABARAN MATERI HIERARKI PEMERINTAHAN -->
+      <div class="bg-white rounded-3xl p-6 sm:p-8 border border-purple-100 shadow-sm space-y-6">
+        <div class="space-y-2 border-b border-purple-100 pb-4">
+          <span class="px-3 py-1 rounded-full bg-purple-100 text-purple-800 text-xs font-extrabold uppercase">Sintaks PBL 2 • Eksplorasi Materi</span>
+          <h3 class="text-xl sm:text-2xl font-extrabold text-slate-900">
+            Hierarki Struktur Pemerintahan dari Pusat ke Daerah Terendah
+          </h3>
+          <p class="text-sm sm:text-base text-slate-600 leading-relaxed">
+            Negara Kesatuan Republik Indonesia (NKRI) memiliki wilayah yang sangat luas dari Sabang sampai Merauke. Agar pelayanan kepada masyarakat berjalan adil dan lancar, pemerintahan dibagi secara berjenjang (hierarki) dari <strong>Pemerintah Pusat</strong> hingga <strong>Pemerintah Daerah Terendah</strong>.
+          </p>
+        </div>
+
+        <!-- Diagram Alur Hierarki Visual -->
+        <div class="space-y-4">
+          <!-- Tingkat 1: Pusat -->
+          <div class="p-5 rounded-2xl bg-gradient-to-r from-purple-700 to-indigo-700 text-white shadow-sm">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+              <span class="text-xs font-bold uppercase tracking-wider bg-white/20 px-3 py-1 rounded-full">1. Tingkat Nasional (Tertinggi)</span>
+              <span class="text-xs font-semibold text-purple-100">Wilayah: Seluruh Indonesia (NKRI)</span>
+            </div>
+            <h4 class="text-lg sm:text-xl font-extrabold">Pemerintah Pusat</h4>
+            <p class="text-sm text-purple-100 mt-1 leading-relaxed">
+              Dipimpin oleh <strong>Presiden</strong> sebagai kepala negara sekaligus kepala pemerintahan, dibantu oleh <strong>Wakil Presiden</strong> dan para <strong>Menteri</strong> (Kabinet). Mengatur urusan nasional seperti pertahanan, keamanan, politik luar negeri, keuangan negara, dan kebijakan pendidikan nasional.
+            </p>
+          </div>
+
+          <div class="flex justify-center text-purple-400 font-bold text-lg">↓</div>
+
+          <!-- Tingkat 2: Provinsi -->
+          <div class="p-5 rounded-2xl bg-purple-50 border border-purple-200">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-1.5">
+              <span class="text-xs font-bold uppercase tracking-wider bg-purple-200 text-purple-900 px-3 py-1 rounded-full">2. Pemerintah Daerah Tingkat I</span>
+              <span class="text-xs font-semibold text-purple-700">Wilayah: Provinsi</span>
+            </div>
+            <h4 class="text-lg font-extrabold text-slate-900">Pemerintah Provinsi (Dipimpin oleh Gubernur)</h4>
+            <p class="text-sm text-slate-700 mt-1 leading-relaxed">
+              Dipimpin oleh <strong>Gubernur</strong> dan <strong>Wakil Gubernur</strong> yang bekerja sama dengan <strong>DPRD Provinsi</strong>. Gubernur bertugas memimpin pembangunan tingkat provinsi serta menjadi wakil Pemerintah Pusat di daerah.
+            </p>
+          </div>
+
+          <div class="flex justify-center text-purple-400 font-bold text-lg">↓</div>
+
+          <!-- Tingkat 3: Kabupaten / Kota -->
+          <div class="p-5 rounded-2xl bg-purple-50/70 border border-purple-200">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-1.5">
+              <span class="text-xs font-bold uppercase tracking-wider bg-indigo-100 text-indigo-900 px-3 py-1 rounded-full">3. Pemerintah Daerah Tingkat II</span>
+              <span class="text-xs font-semibold text-indigo-700">Wilayah: Kabupaten atau Kota</span>
+            </div>
+            <h4 class="text-lg font-extrabold text-slate-900">Pemerintah Kabupaten (Bupati) / Pemerintah Kota (Wali Kota)</h4>
+            <p class="text-sm text-slate-700 mt-1 leading-relaxed">
+              Wilayah kabupaten dipimpin oleh <strong>Bupati</strong>, sedangkan wilayah kota dipimpin oleh <strong>Wali Kota</strong>, didampingi wakil dan <strong>DPRD Kabupaten/Kota</strong>. Di tingkat inilah layanan seperti pencetakan <strong>KTP/KK (Disdukcapil)</strong>, puskesmas, sekolah SD/SMP, dan perbaikan jalan kabupaten/kota dikelola.
+            </p>
+          </div>
+
+          <div class="flex justify-center text-purple-400 font-bold text-lg">↓</div>
+
+          <!-- Tingkat 4: Kecamatan -->
+          <div class="p-5 rounded-2xl bg-white border border-purple-200">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-1.5">
+              <span class="text-xs font-bold uppercase tracking-wider bg-purple-100 text-purple-800 px-3 py-1 rounded-full">4. Perangkat Daerah Wilayah</span>
+              <span class="text-xs font-semibold text-slate-600">Wilayah: Kecamatan (Gabungan beberapa Desa/Kelurahan)</span>
+            </div>
+            <h4 class="text-lg font-extrabold text-slate-900">Pemerintah Kecamatan (Dipimpin oleh Camat)</h4>
+            <p class="text-sm text-slate-700 mt-1 leading-relaxed">
+              Dipimpin oleh seorang <strong>Camat</strong> (Aparatur Sipil Negara/ASN yang diangkat oleh Bupati/Wali Kota). Camat bertugas mengoordinasikan kegiatan pemerintahan, ketenteraman, serta pelayanan masyarakat di beberapa desa atau kelurahan.
+            </p>
+          </div>
+
+          <div class="flex justify-center text-purple-400 font-bold text-lg">↓</div>
+
+          <!-- Tingkat 5: Desa / Kelurahan -->
+          <div class="p-5 rounded-2xl bg-white border-2 border-purple-300">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-1.5">
+              <span class="text-xs font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full">5. Tingkat Pemerintahan Daerah Terendah</span>
+              <span class="text-xs font-semibold text-emerald-700">Wilayah: Desa atau Kelurahan</span>
+            </div>
+            <h4 class="text-lg font-extrabold text-slate-900">Pemerintah Desa (Kepala Desa) & Kelurahan (Lurah)</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-2 text-sm">
+              <div class="p-3.5 rounded-xl bg-purple-50/60 border border-purple-100">
+                <p class="font-bold text-purple-900">🏡 Pemerintahan Desa</p>
+                <p class="text-slate-700 mt-1">Dipimpin oleh <strong>Kepala Desa</strong> yang <strong>dipilih langsung oleh rakyat desa</strong> melalui Pilkades. Dibantu oleh Perangkat Desa (Sekretaris Desa, Kepala Dusun) dan bermitra dengan <strong>BPD</strong> (Badan Permusyawaratan Desa).</p>
+              </div>
+              <div class="p-3.5 rounded-xl bg-indigo-50/60 border border-indigo-100">
+                <p class="font-bold text-indigo-900">🏢 Pemerintahan Kelurahan</p>
+                <p class="text-slate-700 mt-1">Dipimpin oleh <strong>Lurah</strong> yang merupakan pegawai negeri (ASN) yang <strong>diangkat oleh Bupati/Wali Kota</strong> atas usul Camat. Umumnya berada di wilayah perkotaan.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex justify-center text-purple-400 font-bold text-lg">↓</div>
+
+          <!-- Tingkat 6: RW & RT -->
+          <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-1.5">
+              <span class="text-xs font-bold uppercase tracking-wider bg-slate-200 text-slate-800 px-3 py-1 rounded-full">6. Lembaga Kemasyarakatan Terbawah</span>
+              <span class="text-xs font-semibold text-slate-600">Lingkungan Warga Terdekat</span>
+            </div>
+            <h4 class="text-lg font-extrabold text-slate-900">Rukun Warga (RW) & Rukun Tetangga (RT)</h4>
+            <p class="text-sm text-slate-700 mt-1 leading-relaxed">
+              <strong>RT</strong> (dipimpin Ketua RT) dan <strong>RW</strong> (dipimpin Ketua RW) adalah lembaga kemasyarakatan yang dibentuk warga untuk membantu tugas Kepala Desa atau Lurah dalam pelayanan warga sehari-hari, seperti membuat surat pengantar, menjaga keamanan lingkungan, dan gotong royong.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAHAP 3 PBL: PEMECAHAN MASALAH STUDI KASUS -->
+      <div class="bg-white rounded-3xl p-6 sm:p-7 border border-purple-200 shadow-sm space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <span class="px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-extrabold uppercase">Sintaks PBL 3 • Pemecahan Masalah</span>
+            <h3 class="text-lg sm:text-xl font-extrabold text-slate-900 mt-1.5">💡 Jawaban Kasus Pak Budi di Desa Sukamaju</h3>
+          </div>
+          <button onclick="togglePblSolution()" id="btn-pbl-solution" class="px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-700 text-white text-xs sm:text-sm font-bold transition-colors">
+            Lihat Pembahasan Kasus
+          </button>
+        </div>
+
+        <div id="pbl-solution-content" class="hidden p-4 sm:p-5 rounded-2xl bg-purple-50 border border-purple-200 space-y-2.5 text-sm text-slate-700">
+          <p><strong>Urutan langkah penyelesaian masalah Pak Budi dari tingkat terbawah ke atas:</strong></p>
+          <ol class="list-decimal list-inside space-y-1.5">
+            <li><strong>Ketua RT dan Ketua RW:</strong> Pak Budi melapor terlebih dahulu ke Ketua RT dan Ketua RW setempat untuk mendapatkan surat pengantar keterangan warga dan melaporkan kerusakan jembatan lingkungan.</li>
+            <li><strong>Kepala Desa Sukamaju:</strong> Surat pengantar dari RT/RW dibawa ke Kantor Desa untuk disahkan oleh <strong>Kepala Desa</strong>.</li>
+            <li><strong>Camat:</strong> Berkas pengurusan KTP/KK dan laporan kerusakan jembatan diteruskan ke tingkat <strong>Kecamatan</strong> untuk diketahui dan direkomendasikan oleh <strong>Camat</strong>.</li>
+            <li><strong>Pemerintah Kabupaten (Bupati / Dinas Dukcapil & Dinas PUPR):</strong> Pembuatan KTP/KK baru diterbitkan oleh Dinas Kependudukan dan Pencatatan Sipil Kabupaten, sedangkan perbaikan jembatan besar ditangani dinas terkait di tingkat Kabupaten.</li>
+            <li><strong>Gubernur & Pemerintah Pusat (Presiden/Menteri):</strong> Apabila bencana banjir berdampak luas lintas kabupaten, <strong>Gubernur</strong> (Provinsi) dan <strong>Pemerintah Pusat</strong> (Kementerian Sosial/BNPB/Kementerian Dalam Negeri) turut memberikan bantuan nasional.</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- Navigasi Bawah Halaman Materi -->
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">
+        <button onclick="navigateTo('menu')" class="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-white hover:bg-purple-50 text-purple-700 font-bold text-sm border border-purple-200 transition-colors">
+          ← Kembali ke Halaman Menu
+        </button>
+        <button onclick="navigateTo('evaluasi')" class="w-full sm:w-auto px-8 py-3.5 rounded-2xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-sm sm:text-base shadow-md shadow-purple-200 transition-all">
+          Sudah Paham! Lanjut ke Halaman Evaluasi →
+        </button>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         HALAMAN 3: HALAMAN EVALUASI (IDENTITAS + 10 SOAL DARI 35 BANK SOAL)
+         ========================================================= -->
+    <section id="view-evaluasi" class="page-section hidden space-y-6">
+      <!-- Bar Atas Halaman Evaluasi & Tombol Reset Stage -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white p-4 sm:p-5 rounded-3xl border border-purple-100 shadow-sm">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-purple-600">Halaman Evaluasi Siswa</span>
+          <h2 class="text-lg sm:text-xl font-extrabold text-slate-900">Uji Pemahaman Struktur Pemerintahan</h2>
+          <p class="text-xs sm:text-sm text-slate-500">10 soal acak dari 35 bank soal • Skor: <strong class="text-emerald-600">+20 Benar</strong>, <strong class="text-rose-500">0 Salah</strong></p>
+        </div>
+
+        <div class="flex items-center gap-2.5 self-start sm:self-center">
+          <button onclick="confirmResetStage()" class="px-4 py-2.5 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 font-bold text-xs sm:text-sm transition-all flex items-center gap-1.5 shadow-sm" title="Acak ulang 10 soal baru dan reset jawaban">
+            <span>🔄 Reset Stage</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- PESAN UMPAN BALIK (FEEDBACK BANNER) DINAMIS SAAT SELESAI MENGERJAKAN -->
+      <div id="feedback-banner" class="hidden rounded-3xl p-6 sm:p-7 border-2 shadow-md transition-all space-y-4">
+        <!-- Konten diisi secara dinamis oleh JavaScript berdasarkan skor, halaman menu, dan halaman materi -->
+      </div>
+
+      <!-- FORM IDENTITAS PESERTA DIDIK (WAJIB TAMPIL PADA HALAMAN EVALUASI) -->
+      <div class="bg-white rounded-3xl p-6 sm:p-7 border border-purple-200 shadow-sm space-y-4">
+        <div class="flex items-center gap-3 border-b border-purple-100 pb-3">
+          <div class="w-10 h-10 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center text-lg font-bold">
+            🧑‍🎓
+          </div>
+          <div>
+            <h3 class="text-base sm:text-lg font-extrabold text-slate-900">Identitas Peserta Didik</h3>
+            <p class="text-xs text-slate-500">Lengkapi data dirimu sebelum mengumpulkan hasil evaluasi ke spreadsheet guru.</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <!-- Nama Peserta Didik -->
+          <div>
+            <label for="input-nama" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+              Nama Peserta Didik <span class="text-rose-500">*</span>
+            </label>
+            <input type="text" id="input-nama" placeholder="Contoh: Siti Aisyah" class="w-full px-4 py-3 rounded-xl border border-purple-200 bg-purple-50/30 focus:bg-white focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm font-medium text-slate-800 transition-all" />
+          </div>
+
+          <!-- Kelas / Nomor Absen -->
+          <div>
+            <label for="input-kelas-absen" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+              Kelas / Nomor Absen <span class="text-rose-500">*</span>
+            </label>
+            <input type="text" id="input-kelas-absen" placeholder="Contoh: 6A / Absen 12" class="w-full px-4 py-3 rounded-xl border border-purple-200 bg-purple-50/30 focus:bg-white focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm font-medium text-slate-800 transition-all" />
+          </div>
+
+          <!-- Nama Sekolah -->
+          <div>
+            <label for="input-sekolah" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+              Nama Sekolah <span class="text-rose-500">*</span>
+            </label>
+            <input type="text" id="input-sekolah" placeholder="Contoh: SD Negeri 01 Harapan" class="w-full px-4 py-3 rounded-xl border border-purple-200 bg-purple-50/30 focus:bg-white focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm font-medium text-slate-800 transition-all" />
+          </div>
+        </div>
+
+        <!-- Pesan Validasi Inline jika Identitas Belum Lengkap -->
+        <div id="identity-warning" class="hidden p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs sm:text-sm font-semibold flex items-center gap-2">
+          <span>⚠️</span>
+          <span id="identity-warning-text">Mohon lengkapi Nama Peserta Didik, Kelas / Nomor Absen, dan Nama Sekolah terlebih dahulu!</span>
+        </div>
+      </div>
+
+      <!-- INDIKATOR PROGRES PENGERJAAN 10 SOAL -->
+      <div class="bg-white rounded-2xl p-4 border border-purple-100 flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-center gap-2 text-xs sm:text-sm font-bold text-slate-700">
+          <span>Progres Jawaban:</span>
+          <span id="quiz-progress-text" class="px-2.5 py-1 rounded-lg bg-purple-100 text-purple-800">0 / 10 Terjawab</span>
+        </div>
+        <div id="question-pills" class="flex flex-wrap items-center gap-1.5">
+          <!-- Nomor soal 1-10 dirender via JS -->
+        </div>
+      </div>
+
+      <!-- DAFTAR 10 SOAL EVALUASI YANG DIACAK DARI 35 BANK SOAL -->
+      <div id="quiz-container" class="space-y-5">
+        <!-- Kartu soal dirender secara dinamis oleh JavaScript -->
+      </div>
+
+      <!-- TOMBOL AKSI BAWAH EVALUASI -->
+      <div class="bg-white rounded-3xl p-5 sm:p-6 border border-purple-100 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
+        <button onclick="confirmResetStage()" class="w-full sm:w-auto px-5 py-3.5 rounded-2xl bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 font-bold text-sm transition-all">
+          🔄 Reset Stage (Soal Baru)
+        </button>
+
+        <button id="btn-submit-quiz" onclick="submitEvaluation()" class="w-full sm:w-auto px-8 py-3.5 rounded-2xl bg-purple-600 hover:bg-purple-700 active:scale-[0.99] text-white font-extrabold text-sm sm:text-base shadow-md shadow-purple-200 transition-all flex items-center justify-center gap-2">
+          <span>✅ Kumpulkan Tugas & Lihat Nilai</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         HALAMAN 4: HALAMAN SPREADSHEET & REKAP GURU / ADMIN
+         ========================================================= -->
+    <section id="view-spreadsheet" class="page-section hidden space-y-6">
+      <!-- Header Spreadsheet & Tombol Unduh Berpassword -->
+      <div class="bg-white rounded-3xl p-6 sm:p-7 border border-purple-100 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+        <div class="space-y-1">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-100 text-purple-800 text-xs font-bold">
+            <span>📊 Rekapitulasi Nilai Digital</span>
+          </div>
+          <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900">
+            Spreadsheet Hasil Evaluasi Siswa
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-600">
+            Aturan Penilaian: <strong class="text-emerald-600">+20 poin</strong> jika benar, <strong class="text-rose-500">0 poin</strong> jika salah (Skor Maksimal: 200).
+          </p>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2.5">
+          <button onclick="navigateTo('evaluasi')" class="px-4 py-2.5 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-700 font-bold text-xs sm:text-sm border border-purple-200 transition-colors">
+            + Tambah Pengerjaan Siswa
+          </button>
+          <button onclick="openDownloadPasswordModal()" class="px-5 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs sm:text-sm shadow-sm shadow-purple-200 transition-all flex items-center gap-2">
+            <span>🔒 Download Spreadsheet (Guru)</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Ringkasan Statistik Kelas -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div class="bg-white p-4 rounded-2xl border border-purple-100">
+          <p class="text-xs font-semibold text-slate-500">Total Data Masuk</p>
+          <p id="stat-total" class="text-2xl font-extrabold text-purple-700 mt-1">0</p>
+        </div>
+        <div class="bg-white p-4 rounded-2xl border border-purple-100">
+          <p class="text-xs font-semibold text-slate-500">Rata-Rata Skor</p>
+          <p id="stat-avg" class="text-2xl font-extrabold text-indigo-700 mt-1">0</p>
+        </div>
+        <div class="bg-white p-4 rounded-2xl border border-purple-100">
+          <p class="text-xs font-semibold text-slate-500">Skor Tertinggi</p>
+          <p id="stat-max" class="text-2xl font-extrabold text-emerald-600 mt-1">0</p>
+        </div>
+        <div class="bg-white p-4 rounded-2xl border border-purple-100">
+          <p class="text-xs font-semibold text-slate-500">Status Direset</p>
+          <p id="stat-reset" class="text-2xl font-extrabold text-amber-600 mt-1">0</p>
+        </div>
+      </div>
+
+      <!-- Kotak Pencarian & Keterangan Fitur Guru -->
+      <div class="bg-white rounded-3xl border border-purple-200 shadow-sm overflow-hidden">
+        <div class="p-4 sm:p-5 bg-purple-50/60 border-b border-purple-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div class="relative w-full sm:w-80">
+            <input type="text" id="search-spreadsheet" oninput="renderSpreadsheet()" placeholder="Cari nama siswa, kelas, atau sekolah..." class="w-full pl-9 pr-4 py-2 rounded-xl border border-purple-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-purple-500" />
+            <span class="absolute left-3 top-2.5 text-slate-400 text-sm">🔎</span>
+          </div>
+          <div class="text-xs text-slate-600 flex flex-wrap items-center gap-3">
+            <span class="inline-flex items-center gap-1"><strong class="text-amber-700">Reset:</strong> Untuk siswa gangguan pengerjaan</span>
+            <span class="inline-flex items-center gap-1"><strong class="text-rose-700">Hapus:</strong> Untuk data pengerjaan double/ganda</span>
+          </div>
+        </div>
+
+        <!-- Tabel Gaya Spreadsheet -->
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse spreadsheet-table">
+            <thead>
+              <tr class="bg-purple-700 text-white text-xs uppercase tracking-wider">
+                <th class="py-3.5 px-4 border-r border-purple-600 font-bold w-12 text-center">No</th>
+                <th class="py-3.5 px-4 border-r border-purple-600 font-bold">Waktu Submit</th>
+                <th class="py-3.5 px-4 border-r border-purple-600 font-bold">Nama Peserta Didik</th>
+                <th class="py-3.5 px-4 border-r border-purple-600 font-bold">Kelas / No. Absen</th>
+                <th class="py-3.5 px-4 border-r border-purple-600 font-bold">Nama Sekolah</th>
+                <th class="py-3.5 px-4 border-r border-purple-600 font-bold text-center">Benar / Salah</th>
+                <th class="py-3.5 px-4 border-r border-purple-600 font-bold text-center">Skor (+20/Benar)</th>
+                <th class="py-3.5 px-4 border-r border-purple-600 font-bold text-center">Status</th>
+                <th class="py-3.5 px-4 font-bold text-center">Aksi Individu</th>
+              </tr>
+            </thead>
+            <tbody id="spreadsheet-body" class="divide-y divide-purple-100 text-sm text-slate-700 bg-white">
+              <!-- Baris data siswa dirender via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ==================== FOOTER MINIMALIS ==================== -->
+  <footer class="bg-white border-t border-purple-100 py-5 mt-10">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-500">
+      <p class="font-semibold text-purple-800">LMS Pendidikan Pancasila Kelas 6 SD • Hierarki Struktur Pemerintahan (PBL)</p>
+      <p>Desain Minimalis Light Mode • Ramah Anak & Guru</p>
+    </div>
+  </footer>
+
+  <!-- ==================== MODAL PASSWORD DOWNLOAD GURU / ADMIN ==================== -->
+  <div id="modal-password" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/50 backdrop-blur-xs p-4">
+    <div id="modal-password-card" class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-7 border border-purple-200 shadow-xl space-y-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="w-10 h-10 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center text-lg">🔐</div>
+          <div>
+            <h3 class="text-lg font-extrabold text-slate-900">Verifikasi Guru / Admin</h3>
+            <p class="text-xs text-slate-500">Masukkan password khusus untuk mengunduh spreadsheet</p>
+          </div>
+        </div>
+        <button onclick="closePasswordModal()" class="text-slate-400 hover:text-slate-700 text-xl font-bold px-2">×</button>
+      </div>
+
+      <div class="space-y-2">
+        <label for="teacher-password-input" class="block text-xs font-bold uppercase tracking-wider text-slate-700">Password Guru / Admin</label>
+        <div class="relative">
+          <input type="password" id="teacher-password-input" onkeydown="if(event.key==='Enter') verifyAndDownloadSpreadsheet()" placeholder="Masukkan password..." class="w-full px-4 py-3 rounded-xl border border-purple-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm pr-12" />
+          <button type="button" onclick="togglePasswordVisibility()" class="absolute right-3 top-3 text-xs font-bold text-purple-600 hover:text-purple-800">
+            Lihat
+          </button>
+        </div>
+        <p id="password-error-msg" class="hidden text-xs font-semibold text-rose-600 pt-1">
+          ❌ Password salah! Hanya Guru atau Admin yang berhak mengunduh spreadsheet.
+        </p>
+      </div>
+
+      <div class="flex items-center justify-end gap-2.5 pt-2">
+        <button onclick="closePasswordModal()" class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-sm transition-colors">
+          Batal
+        </button>
+        <button onclick="verifyAndDownloadSpreadsheet()" class="px-5 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-sm shadow-sm transition-colors">
+          Unduh Spreadsheet
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL KONFIRMASI KUSTOM (PENGGANTI CONFIRM/ALERT) ==================== -->
+  <div id="modal-confirm" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/50 backdrop-blur-xs p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 border border-purple-200 shadow-xl space-y-4">
+      <div class="flex items-start gap-3">
+        <div id="confirm-icon" class="w-11 h-11 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center text-xl shrink-0">⚠️</div>
+        <div>
+          <h3 id="confirm-title" class="text-lg font-extrabold text-slate-900">Konfirmasi Tindakan</h3>
+          <p id="confirm-message" class="text-sm text-slate-600 mt-1 leading-relaxed">Apakah Anda yakin ingin melanjutkan?</p>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-end gap-2.5 pt-2">
+        <button onclick="closeConfirmModal()" class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-sm transition-colors">
+          Batal
+        </button>
+        <button id="confirm-action-btn" class="px-5 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-sm shadow-sm transition-colors">
+          Ya, Lanjutkan
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== TOAST NOTIFICATION ==================== -->
+  <div id="toast-notification" class="fixed bottom-5 right-5 z-50 hidden max-w-sm bg-slate-900 text-white px-4 py-3 rounded-2xl shadow-lg text-sm font-medium flex items-center gap-2.5 transition-all">
+    <span id="toast-icon">✅</span>
+    <span id="toast-text">Notifikasi</span>
+  </div>
+
+  <!-- ==================== JAVASCRIPT LOGIKA LMS LENGKAP ==================== -->
+  <script>
+    /**
+     * =========================================================================
+     * 1. BANK SOAL LENGKAP (35 SOAL PILIHAN GANDA SD KELAS 6)
+     * Materi: Mengidentifikasi komponen utama hierarki struktur pemerintahan
+     * dari pusat ke daerah terendah melalui metode Problem-Based Learning (PBL)
+     * =========================================================================
+     */
+    const QUESTION_BANK = [
+      {
+        id: 1,
+        question: "Susunan urutan hierarki pemerintahan di Indonesia dari tingkat paling tinggi (pusat) hingga tingkat pemerintahan daerah terendah adalah ....",
+        options: [
+          "Pemerintah Pusat → Provinsi → Kabupaten/Kota → Kecamatan → Desa/Kelurahan",
+          "Pemerintah Pusat → Kabupaten/Kota → Provinsi → Desa/Kelurahan → Kecamatan",
+          "Provinsi → Pemerintah Pusat → Kecamatan → Kabupaten/Kota → Desa/Kelurahan",
+          "Desa/Kelurahan → Kecamatan → Kabupaten/Kota → Provinsi → Pemerintah Pusat"
+        ],
+        answer: 0,
+        explanation: "Urutan resmi dari pusat ke daerah terendah adalah Pemerintah Pusat, Provinsi, Kabupaten/Kota, Kecamatan, lalu Desa/Kelurahan."
+      },
+      {
+        id: 2,
+        question: "Di tingkat nasional, lembaga eksekutif pada Pemerintah Pusat dipimpin oleh ....",
+        options: [
+          "Gubernur dan Wakil Gubernur",
+          "Presiden dan Wakil Presiden",
+          "Bupati dan Wakil Bupati",
+          "Ketua DPR dan Ketua MPR"
+        ],
+        answer: 1,
+        explanation: "Presiden dibantu Wakil Presiden dan para Menteri memimpin penyelenggaraan Pemerintah Pusat di tingkat nasional."
+      },
+      {
+        id: 3,
+        question: "Pemerintah Daerah Tingkat I yang membawahi beberapa kabupaten dan kota disebut provinsi. Kepala daerah yang memimpin provinsi adalah ....",
+        options: [
+          "Wali Kota",
+          "Bupati",
+          "Gubernur",
+          "Camat"
+        ],
+        answer: 2,
+        explanation: "Gubernur adalah kepala daerah otonom provinsi sekaligus wakil Pemerintah Pusat di wilayah provinsi."
+      },
+      {
+        id: 4,
+        question: "Perbedaan utama pemimpin daerah tingkat kabupaten dan kota adalah ....",
+        options: [
+          "Kabupaten dipimpin Gubernur, sedangkan kota dipimpin Camat",
+          "Kabupaten dipimpin Bupati, sedangkan kota dipimpin Wali Kota",
+          "Kabupaten dipimpin Lurah, sedangkan kota dipimpin Kepala Desa",
+          "Kabupaten dipimpin Camat, sedangkan kota dipimpin Bupati"
+        ],
+        answer: 1,
+        explanation: "Wilayah kabupaten dipimpin oleh Bupati, sedangkan wilayah kota dipimpin oleh Wali Kota."
+      },
+      {
+        id: 5,
+        question: "Wilayah kerja seorang Camat meliputi gabungan dari beberapa ....",
+        options: [
+          "Provinsi",
+          "Kabupaten dan Kota",
+          "Desa atau Kelurahan",
+          "Negara bagian"
+        ],
+        answer: 2,
+        explanation: "Kecamatan merupakan perangkat daerah kabupaten/kota yang membawahi beberapa desa atau kelurahan."
+      },
+      {
+        id: 6,
+        question: "Tingkat pemerintahan daerah terendah dalam struktur pemerintahan Indonesia adalah ....",
+        options: [
+          "Kecamatan",
+          "Kabupaten/Kota",
+          "Provinsi",
+          "Desa atau Kelurahan"
+        ],
+        answer: 3,
+        explanation: "Desa dan Kelurahan adalah tingkat pemerintahan daerah paling bawah yang berhadapan langsung dengan masyarakat."
+      },
+      {
+        id: 7,
+        question: "Perbedaan cara pengangkatan Kepala Desa dan Lurah adalah ....",
+        options: [
+          "Kepala Desa dipilih langsung oleh warga desa, sedangkan Lurah adalah ASN yang diangkat Bupati/Wali Kota",
+          "Kepala Desa diangkat Presiden, sedangkan Lurah dipilih oleh warga",
+          "Keduanya sama-sama dipilih melalui pemilihan presiden",
+          "Lurah dipilih warga desa, sedangkan Kepala Desa ditunjuk Gubernur"
+        ],
+        answer: 0,
+        explanation: "Kepala Desa dipilih langsung oleh penduduk desa melalui Pilkades, sedangkan Lurah adalah pegawai negeri (ASN) yang diangkat oleh Bupati/Wali Kota."
+      },
+      {
+        id: 8,
+        question: "(Studi Kasus PBL) Keluarga Rina baru pindah rumah dan ingin mengurus surat pengantar domisili pertama kali di lingkungan tempat tinggalnya. Siapakah pengurus kemasyarakatan paling bawah yang harus ditemui Rina?",
+        options: [
+          "Gubernur dan DPRD Provinsi",
+          "Ketua RT dan Ketua RW",
+          "Menteri Dalam Negeri",
+          "Bupati atau Wali Kota"
+        ],
+        answer: 1,
+        explanation: "Ketua RT dan Ketua RW adalah lembaga kemasyarakatan terdekat dengan warga yang memberikan surat pengantar awal sebelum ke desa/kelurahan."
+      },
+      {
+        id: 9,
+        question: "Dalam menjalankan pemerintahan di tingkat desa, Kepala Desa bermitra dengan lembaga perwakilan warga desa yang disebut ....",
+        options: [
+          "DPR RI",
+          "DPRD Provinsi",
+          "BPD (Badan Permusyawaratan Desa)",
+          "Mahkamah Agung"
+        ],
+        answer: 2,
+        explanation: "BPD (Badan Permusyawaratan Desa) merupakan lembaga perwujudan demokrasi dalam penyelenggaraan pemerintahan desa."
+      },
+      {
+        id: 10,
+        question: "Urusan pemerintahan berikut ini yang menjadi kewenangan mutlak Pemerintah Pusat dan tidak diserahkan kepada daerah adalah ....",
+        options: [
+          "Pengelolaan kebersihan pasar desa",
+          "Pertahanan negara, keamanan nasional, dan politik luar negeri",
+          "Pembangunan pos ronda di tingkat RT",
+          "Pengaturan jadwal ronda malam warga"
+        ],
+        answer: 1,
+        explanation: "Pertahanan, keamanan, politik luar negeri, yustisi, moneter/fiskal nasional, dan agama adalah urusan absolut Pemerintah Pusat."
+      },
+      {
+        id: 11,
+        question: "(Studi Kasus PBL) Jembatan penghubung antar-kecamatan di wilayah Kabupaten Makmur putus akibat banjir bandang. Lembaga pemerintahan tingkat II yang paling bertanggung jawab memperbaiki jembatan antar-kecamatan tersebut adalah ....",
+        options: [
+          "Ketua RT setempat",
+          "Pemerintah Kabupaten yang dipimpin Bupati",
+          "Pemerintah Kelurahan",
+          "Sekretaris Desa"
+        ],
+        answer: 1,
+        explanation: "Infrastruktur yang menghubungkan antar-kecamatan dalam satu kabupaten menjadi tanggung jawab Pemerintah Kabupaten (Bupati beserta dinas terkait)."
+      },
+      {
+        id: 12,
+        question: "Dalam struktur pemerintahan desa, pejabat yang membantu Kepala Desa dalam urusan administrasi, surat-menyurat, dan arsip desa adalah ....",
+        options: [
+          "Sekretaris Desa",
+          "Gubernur",
+          "Camat",
+          "Menteri Sekretaris Negara"
+        ],
+        answer: 0,
+        explanation: "Sekretaris Desa (Sekdes) memimpin sekretariat desa yang mengelola administrasi dan tata usaha pemerintahan desa."
+      },
+      {
+        id: 13,
+        question: "Susunan urutan pemerintahan dari daerah terendah menuju ke tingkat pusat yang benar adalah ....",
+        options: [
+          "Desa/Kelurahan → Kecamatan → Kabupaten/Kota → Provinsi → Pemerintah Pusat",
+          "Kecamatan → Desa/Kelurahan → Provinsi → Kabupaten/Kota → Pemerintah Pusat",
+          "Pemerintah Pusat → Provinsi → Kecamatan → Kabupaten/Kota → Desa/Kelurahan",
+          "Kabupaten/Kota → Provinsi → Desa/Kelurahan → Kecamatan → Pemerintah Pusat"
+        ],
+        answer: 0,
+        explanation: "Jika diurutkan dari bawah ke atas: Desa/Kelurahan → Kecamatan → Kabupaten/Kota → Provinsi → Pemerintah Pusat."
+      },
+      {
+        id: 14,
+        question: "Wilayah bagian dari desa yang dipimpin oleh seorang Kepala Dusun (Kadus) disebut ....",
+        options: [
+          "Provinsi",
+          "Dusun atau Padukuhan",
+          "Kecamatan",
+          "Kotamadya"
+        ],
+        answer: 1,
+        explanation: "Desa biasanya terbagi atas beberapa wilayah dusun yang masing-masing dipimpin oleh Kepala Dusun sebagai perangkat desa."
+      },
+      {
+        id: 15,
+        question: "Dalam menyusun peraturan daerah di tingkat provinsi, Gubernur bekerja sama dengan lembaga legislatif daerah yaitu ....",
+        options: [
+          "BPD (Badan Permusyawaratan Desa)",
+          "DPRD Provinsi",
+          "MPR RI",
+          "Ketua RW"
+        ],
+        answer: 1,
+        explanation: "DPRD Provinsi bersama Gubernur menjalankan fungsi pembentukan Peraturan Daerah (Perda) Provinsi dan pengawasan anggaran."
+      },
+      {
+        id: 16,
+        question: "(Studi Kasus PBL) Dani tinggal di wilayah perkotaan yang padat penduduk. Kantor pemerintahan terendah tempat orang tua Dani mengurus surat keterangan tidak mampu dipimpin oleh seorang ASN bernama Ibu Rina. Jabatan Ibu Rina adalah ....",
+        options: [
+          "Kepala Desa",
+          "Lurah",
+          "Bupati",
+          "Gubernur"
+        ],
+        answer: 1,
+        explanation: "Di wilayah perkotaan, unit pemerintahan terendah berbentuk Kelurahan yang dipimpin oleh seorang Lurah (ASN)."
+      },
+      {
+        id: 17,
+        question: "Siapakah yang mengangkat seorang Camat untuk memimpin wilayah kecamatan?",
+        options: [
+          "Dipilih langsung oleh anak-anak sekolah",
+          "Diangkat oleh Bupati atau Wali Kota atas usul Sekretaris Daerah",
+          "Dipilih oleh Ketua RT se-kecamatan",
+          "Diangkat oleh Kepala Dusun"
+        ],
+        answer: 1,
+        explanation: "Camat merupakan aparatur sipil negara yang diangkat oleh Bupati/Wali Kota untuk memimpin kecamatan."
+      },
+      {
+        id: 18,
+        question: "Para Menteri yang membantu Presiden dalam memimpin bidang tertentu seperti pendidikan, kesehatan, dan pertanian tergabung dalam ....",
+        options: [
+          "Kabinet Pemerintah Pusat",
+          "Perangkat Desa",
+          "Pengurus Rukun Warga",
+          "DPRD Kabupaten"
+        ],
+        answer: 0,
+        explanation: "Para Menteri yang diangkat dan diberhentikan oleh Presiden tergabung dalam Kabinet pada Pemerintah Pusat."
+      },
+      {
+        id: 19,
+        question: "Hubungan antara RT (Rukun Tetangga) dan RW (Rukun Warga) yang tepat adalah ....",
+        options: [
+          "Satu RT terdiri atas beberapa RW",
+          "Satu RW terdiri atas beberapa RT",
+          "RT dan RW berada di atas Gubernur",
+          "RT dipimpin oleh Bupati, RW dipimpin Camat"
+        ],
+        answer: 1,
+        explanation: "Rukun Warga (RW) membawahi beberapa Rukun Tetangga (RT) di lingkungan desa atau kelurahan."
+      },
+      {
+        id: 20,
+        question: "(Studi Kasus PBL) Sebuah jalan raya nasional yang menghubungkan dua provinsi mengalami kerusakan parah. Pemerintah tingkat mana yang paling berwenang menangani jalan nasional lintas provinsi tersebut?",
+        options: [
+          "Pemerintah Desa",
+          "Pemerintah Kecamatan",
+          "Pemerintah Pusat melalui Kementerian Pekerjaan Umum",
+          "Pengurus RT/RW"
+        ],
+        answer: 2,
+        explanation: "Jalan nasional yang menghubungkan antarprovinsi dikelola langsung oleh Pemerintah Pusat melalui kementerian terkait."
+      },
+      {
+        id: 21,
+        question: "Otonomi daerah memberikan hak dan wewenang kepada daerah provinsi serta kabupaten/kota untuk ....",
+        options: [
+          "Membentuk tentara dan mencetak mata uang sendiri",
+          "Mengatur dan mengurus sendiri urusan pemerintahan dan kepentingan masyarakat setempat sesuai undang-undang",
+          "Memisahkan diri dari Negara Kesatuan Republik Indonesia",
+          "Menghapus jabatan Presiden di tingkat pusat"
+        ],
+        answer: 1,
+        explanation: "Otonomi daerah bertujuan mempercepat pelayanan dan kesejahteraan masyarakat daerah dalam bingkai NKRI."
+      },
+      {
+        id: 22,
+        question: "Lembaga di tingkat kabupaten atau kota yang bertugas melayani pencetakan Kartu Tanda Penduduk (KTP) dan Akta Kelahiran warga adalah ....",
+        options: [
+          "Dinas Kependudukan dan Pencatatan Sipil (Disdukcapil)",
+          "Kementerian Luar Negeri",
+          "Badan Permusyawaratan Desa",
+          "Pos Keamanan Lingkungan"
+        ],
+        answer: 0,
+        explanation: "Disdukcapil berada di bawah Pemerintah Kabupaten/Kota dan bertugas melayani administrasi kependudukan seperti KTP, KK, dan Akta."
+      },
+      {
+        id: 23,
+        question: "Manakah pasangan wilayah pemerintahan dan pemimpinnya yang paling tepat di bawah ini?",
+        options: [
+          "Provinsi dipimpin Bupati",
+          "Kota dipimpin Wali Kota",
+          "Kecamatan dipimpin Lurah",
+          "Desa dipimpin Camat"
+        ],
+        answer: 1,
+        explanation: "Kota dipimpin oleh Wali Kota. (Provinsi oleh Gubernur, Kecamatan oleh Camat, Desa oleh Kepala Desa)."
+      },
+      {
+        id: 24,
+        question: "(Studi Kasus PBL) Warga Desa Melati ingin mengusulkan pembangunan saluran air bersih menggunakan Dana Desa. Musyawarah perencanaan pembangunan desa (Musrenbangdes) dipimpin bersama oleh ....",
+        options: [
+          "Presiden dan Menteri Keuangan",
+          "Kepala Desa bersama BPD dan tokoh masyarakat desa",
+          "Gubernur dan Wali Kota",
+          "Duta Besar negara sahabat"
+        ],
+        answer: 1,
+        explanation: "Musrenbangdes diselenggarakan di tingkat desa oleh Kepala Desa, perangkat desa, BPD, serta perwakilan warga/RT/RW."
+      },
+      {
+        id: 25,
+        question: "Kedudukan Gubernur memiliki peran ganda dalam sistem pemerintahan Indonesia, yaitu sebagai kepala daerah provinsi sekaligus sebagai ....",
+        options: [
+          "Ketua RT di ibu kota negara",
+          "Wakil Pemerintah Pusat di daerah provinsi",
+          "Kepala Desa di seluruh kabupaten",
+          "Pimpinan tertinggi TNI dan Polri"
+        ],
+        answer: 1,
+        explanation: "Sesuai undang-undang pemerintahan daerah, Gubernur berkedudukan sebagai Kepala Daerah Provinsi sekaligus wakil Pemerintah Pusat di daerah."
+      },
+      {
+        id: 26,
+        question: "Di bawah ini yang termasuk komponen perangkat daerah di tingkat desa adalah ....",
+        options: [
+          "Sekretaris Desa, Kepala Urusan (Kaur), Kepala Seksi (Kasi), dan Kepala Dusun",
+          "Gubernur, Wakil Gubernur, dan Sekretaris Daerah Provinsi",
+          "Menteri Pendidikan, Menteri Kesehatan, dan Menteri Sosial",
+          "Bupati, Wali Kota, dan Camat"
+        ],
+        answer: 0,
+        explanation: "Perangkat desa terdiri atas Sekretariat Desa, Pelaksana Kewilayahan (Kepala Dusun), dan Pelaksana Teknis (Kasi)."
+      },
+      {
+        id: 27,
+        question: "Mengapa struktur pemerintahan di Indonesia disusun secara berjenjang dari pusat sampai desa/kelurahan?",
+        options: [
+          "Agar masyarakat kesulitan mengurus surat-surat penting",
+          "Agar pelayanan publik, pembangunan, dan pengawasan menjangkau seluruh warga secara merata hingga pelosok",
+          "Supaya semua keputusan hanya diambil oleh satu orang saja",
+          "Agar wilayah provinsi tidak memiliki pemimpin"
+        ],
+        answer: 1,
+        explanation: "Hierarki pemerintahan memudahkan pembagian tugas sehingga pelayanan kepada rakyat dapat menjangkau hingga lingkungan terkecil."
+      },
+      {
+        id: 28,
+        question: "(Studi Kasus PBL) Di Kecamatan Sukasari terdapat 6 desa dan 2 kelurahan. Jika terjadi perselisihan batas wilayah antar-desa di kecamatan tersebut, pejabat pemerintahan yang pertama kali memfasilitasi mediasi di tingkat kecamatan adalah ....",
+        options: [
+          "Camat",
+          "Presiden",
+          "Ketua RT",
+          "Menteri Pertahanan"
+        ],
+        answer: 0,
+        explanation: "Camat bertugas mengoordinasikan ketenteraman, ketertiban, serta membina penyelenggaraan pemerintahan desa/kelurahan di wilayah kecamatannya."
+      },
+      {
+        id: 29,
+        question: "Bupati dalam menjalankan tugas pemerintahan di kabupaten bekerja sama dengan lembaga legislatif kabupaten yaitu ....",
+        options: [
+          "DPRD Kabupaten",
+          "BPD Desa",
+          "DPD RI",
+          "Pengurus RW"
+        ],
+        answer: 0,
+        explanation: "DPRD Kabupaten adalah mitra sejajar Bupati dalam penyelenggaraan pemerintahan daerah kabupaten."
+      },
+      {
+        id: 30,
+        question: "Lembaga RT dan RW di desa atau kelurahan dibentuk berdasarkan ....",
+        options: [
+          "Penunjukan langsung oleh Presiden",
+          "Musyawarah masyarakat setempat yang difasilitasi pemerintah desa/kelurahan",
+          "Keputusan Menteri Luar Negeri",
+          "Ujian nasional tingkat SD"
+        ],
+        answer: 1,
+        explanation: "Pengurus RT dan RW dipilih melalui musyawarah warga setempat untuk membantu pelayanan kemasyarakatan."
+      },
+      {
+        id: 31,
+        question: "Manakah urutan tingkat wilayah pemerintahan dari yang PALING LUAS ke yang PALING SEMPIT?",
+        options: [
+          "Negara (Pusat) → Provinsi → Kabupaten/Kota → Kecamatan → Desa/Kelurahan",
+          "Provinsi → Negara (Pusat) → Kecamatan → Kabupaten/Kota → Desa/Kelurahan",
+          "Desa/Kelurahan → Kecamatan → Kabupaten/Kota → Provinsi → Negara (Pusat)",
+          "Kabupaten/Kota → Kecamatan → Provinsi → Desa/Kelurahan → Negara (Pusat)"
+        ],
+        answer: 0,
+        explanation: "Cakupan wilayah terluas adalah Negara (Pusat), lalu Provinsi, Kabupaten/Kota, Kecamatan, dan paling sempit adalah Desa/Kelurahan."
+      },
+      {
+        id: 32,
+        question: "(Studi Kasus PBL) Ibu Sari ingin mendaftarkan usaha mikro kecilnya agar mendapat izin resmi dan pembinaan dari pemerintah kota. Setelah mendapat pengantar dari kelurahan dan kecamatan, dinas tingkat kota yang dituju berada di bawah pimpinan ....",
+        options: [
+          "Wali Kota",
+          "Kepala Dusun",
+          "Ketua RW",
+          "Kepala Desa"
+        ],
+        answer: 0,
+        explanation: "Dinas-dinas pelayanan publik di tingkat kota berada di bawah koordinasi Wali Kota."
+      },
+      {
+        id: 33,
+        question: "Salah satu tugas utama Kepala Desa dalam memajukan desanya adalah ....",
+        options: [
+          "Mengatur kebijakan hubungan luar negeri Indonesia",
+          "Menyelenggarakan pemerintahan desa, melaksanakan pembangunan desa, dan membina kemasyarakatan desa",
+          "Mencetak uang kertas baru untuk warga desa",
+          "Mengangkat dan memberhentikan Gubernur"
+        ],
+        answer: 1,
+        explanation: "Kepala Desa bertugas menyelenggarakan pemerintahan, pembangunan, pembinaan kemasyarakatan, dan pemberdayaan masyarakat desa."
+      },
+      {
+        id: 34,
+        question: "Dalam sistem pemerintahan NKRI, kedudukan desa dan kelurahan berada langsung di bawah koordinasi wilayah ....",
+        options: [
+          "Kecamatan",
+          "Kementerian Luar Negeri",
+          "Provinsi secara langsung tanpa kecamatan",
+          "Mahkamah Konstitusi"
+        ],
+        answer: 0,
+        explanation: "Desa dan kelurahan merupakan bagian wilayah kerja dari Kecamatan."
+      },
+      {
+        id: 35,
+        question: "(Studi Kasus PBL) Saat terjadi wabah demam berdarah di lingkungan warga, Ketua RT mengajak warga melakukan kerja bakti membersihkan selokan (3M Plus), sementara Puskesmas Kecamatan melakukan pengasapan (fogging). Kerja sama ini menunjukkan sinergi antara ....",
+        options: [
+          "Pemerintah Pusat dan negara tetangga",
+          "Lembaga kemasyarakatan terbawah (RT) dengan instansi pelayanan tingkat kecamatan",
+          "Gubernur dan Presiden saja",
+          "DPR RI dan Mahkamah Agung"
+        ],
+        answer: 1,
+        explanation: "Ketua RT menggerakkan partisipasi warga di tingkat terbawah, bersinergi dengan Puskesmas di tingkat kecamatan untuk menjaga kesehatan masyarakat."
+      }
+    ];
+
+    /**
+     * =========================================================================
+     * 2. STATE APLIKASI & PENYIMPANAN LOCALSTORAGE
+     * =========================================================================
+     */
+    const STORAGE_KEY = 'lms_pancasila_kls6_records_v1';
+
+    // Data awal contoh agar guru langsung melihat tampilan spreadsheet yang rapi
+    const INITIAL_SAMPLE_DATA = [
+      {
+        id: 'rec-sample-1',
+        timestamp: '17/11/2026, 08:15',
+        nama: 'Bima Pratama',
+        kelasAbsen: '6A / Absen 04',
+        sekolah: 'SD Negeri 1 Nusantara',
+        correctCount: 9,
+        wrongCount: 1,
+        score: 180,
+        status: 'Selesai'
+      },
+      {
+        id: 'rec-sample-2',
+        timestamp: '17/11/2026, 08:22',
+        nama: 'Nabila Putri',
+        kelasAbsen: '6A / Absen 15',
+        sekolah: 'SD Negeri 1 Nusantara',
+        correctCount: 10,
+        wrongCount: 0,
+        score: 200,
+        status: 'Selesai'
+      }
+    ];
+
+    let studentRecords = [];
+    let currentQuestions = []; // 10 soal aktif yang diacak dari 35 bank soal
+    let userAnswers = {};      // { questionId: selectedOptionIndex }
+    let isQuizSubmitted = false;
+    let pendingConfirmCallback = null;
+
+    /**
+     * =========================================================================
+     * 3. INISIALISASI SAAT HALAMAN DIMUAT
+     * =========================================================================
+     */
+    window.addEventListener('DOMContentLoaded', () => {
+      loadRecordsFromStorage();
+      generateNewStageQuestions();
+      renderSpreadsheet();
+      updateBadgeCount();
+    });
+
+    function loadRecordsFromStorage() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+          studentRecords = JSON.parse(saved);
+        } else {
+          studentRecords = [...INITIAL_SAMPLE_DATA];
+          saveRecordsToStorage();
+        }
+      } catch (err) {
+        console.error('Gagal memuat data penyimpanan:', err);
+        studentRecords = [...INITIAL_SAMPLE_DATA];
+      }
+    }
+
+    function saveRecordsToStorage() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(studentRecords));
+      } catch (err) {
+        console.error('Gagal menyimpan data:', err);
+      }
+      updateBadgeCount();
+    }
+
+    function updateBadgeCount() {
+      const badge = document.getElementById('badge-count');
+      if (badge) {
+        badge.textContent = studentRecords.length;
+      }
+    }
+
+    /**
+     * =========================================================================
+     * 4. NAVIGASI HALAMAN (MENU, MATERI, EVALUASI, SPREADSHEET)
+     * =========================================================================
+     */
+    function navigateTo(pageName) {
+      const sections = ['menu', 'materi', 'evaluasi', 'spreadsheet'];
+      sections.forEach((sec) => {
+        const el = document.getElementById(`view-${sec}`);
+        const navBtn = document.getElementById(`nav-${sec}`);
+        if (el) {
+          if (sec === pageName) {
+            el.classList.remove('hidden');
+          } else {
+            el.classList.add('hidden');
+          }
+        }
+        if (navBtn) {
+          if (sec === pageName) {
+            navBtn.className = 'nav-btn px-3.5 py-2 rounded-xl text-sm font-semibold transition-all whitespace-nowrap flex items-center gap-1.5 bg-purple-600 text-white shadow-sm';
+          } else {
+            navBtn.className = 'nav-btn px-3.5 py-2 rounded-xl text-sm font-semibold transition-all whitespace-nowrap flex items-center gap-1.5 text-slate-600 hover:bg-purple-50 hover:text-purple-700';
+          }
+        }
+      });
+
+      if (pageName === 'spreadsheet') {
+        renderSpreadsheet();
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    /**
+     * =========================================================================
+     * 5. INTERAKSI HALAMAN MATERI (VIDEO YOUTUBE & SOLUSI PBL)
+     * =========================================================================
+     */
+    function toggleVideoEmbed() {
+      const box = document.getElementById('youtube-embed-box');
+      const btn = document.getElementById('btn-toggle-video');
+      if (box.classList.contains('hidden')) {
+        box.classList.remove('hidden');
+        btn.textContent = '🔼 Sembunyikan Pemutar Video';
+      } else {
+        box.classList.add('hidden');
+        btn.textContent = '🎬 Putar Video di Halaman Ini';
+      }
+    }
+
+    function togglePblSolution() {
+      const box = document.getElementById('pbl-solution-content');
+      const btn = document.getElementById('btn-pbl-solution');
+      if (box.classList.contains('hidden')) {
+        box.classList.remove('hidden');
+        btn.textContent = 'Sembunyikan Pembahasan';
+      } else {
+        box.classList.add('hidden');
+        btn.textContent = 'Lihat Pembahasan Kasus';
+      }
+    }
+
+    /**
+     * =========================================================================
+     * 6. LOGIKA EVALUASI: ACAK 10 SOAL DARI 35 BANK SOAL & RESET STAGE
+     * =========================================================================
+     */
+    function shuffleArray(array) {
+      const arr = [...array];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    function generateNewStageQuestions() {
+      // Ambil 10 soal acak dari 35 bank soal
+      const shuffled = shuffleArray(QUESTION_BANK);
+      currentQuestions = shuffled.slice(0, 10);
+      userAnswers = {};
+      isQuizSubmitted = false;
+
+      // Sembunyikan feedback banner lama jika ada
+      const feedbackBanner = document.getElementById('feedback-banner');
+      if (feedbackBanner) {
+        feedbackBanner.classList.add('hidden');
+        feedbackBanner.innerHTML = '';
+      }
+
+      // Aktifkan kembali tombol kumpulkan
+      const submitBtn = document.getElementById('btn-submit-quiz');
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+      }
+
+      renderQuestions();
+      updateQuizProgress();
+    }
+
+    function confirmResetStage() {
+      openConfirmModal(
+        '🔄 Reset Stage Evaluasi?',
+        'Sistem akan mengacak ulang 10 soal baru dari 35 bank soal dan menghapus pilihan jawabanmu saat ini. Lanjutkan?',
+        () => {
+          generateNewStageQuestions();
+          showToast('🔄', 'Stage direset! 10 soal baru dari 35 bank soal telah dimuat.');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      );
+    }
+
+    function renderQuestions() {
+      const container = document.getElementById('quiz-container');
+      const pillsContainer = document.getElementById('question-pills');
+      if (!container || !pillsContainer) return;
+
+      container.innerHTML = '';
+      pillsContainer.innerHTML = '';
+
+      const optionLetters = ['A', 'B', 'C', 'D'];
+
+      currentQuestions.forEach((q, idx) => {
+        const qNum = idx + 1;
+        const selectedIdx = userAnswers[q.id];
+
+        // Render nomor navigasi cepat (pills)
+        const pill = document.createElement('a');
+        pill.href = `#soal-${qNum}`;
+        pill.id = `pill-${qNum}`;
+        pill.textContent = qNum;
+        pill.className = `w-7 h-7 rounded-lg text-xs font-bold flex items-center justify-center border transition-colors ${
+          selectedIdx !== undefined
+            ? 'bg-purple-600 text-white border-purple-600'
+            : 'bg-purple-50 text-purple-700 border-purple-200 hover:bg-purple-100'
+        }`;
+        pillsContainer.appendChild(pill);
+
+        // Render kartu soal
+        const card = document.createElement('div');
+        card.id = `soal-${qNum}`;
+        card.className = 'bg-white rounded-3xl p-5 sm:p-7 border border-purple-100 shadow-sm space-y-4 scroll-mt-24';
+
+        let optionsHtml = '';
+        q.options.forEach((optText, optIdx) => {
+          const isSelected = selectedIdx === optIdx;
+          let optionStyle = 'border-purple-100 bg-purple-50/30 hover:bg-purple-50 hover:border-purple-300 text-slate-800';
+          let badgeStyle = 'bg-white text-purple-700 border-purple-200';
+          let statusIcon = '';
+
+          if (isQuizSubmitted) {
+            if (optIdx === q.answer) {
+              optionStyle = 'border-emerald-400 bg-emerald-50 text-emerald-950 font-semibold';
+              badgeStyle = 'bg-emerald-600 text-white border-emerald-600';
+              statusIcon = '<span class="ml-auto text-xs font-bold text-emerald-700">✓ Benar (+20)</span>';
+            } else if (isSelected && optIdx !== q.answer) {
+              optionStyle = 'border-rose-400 bg-rose-50 text-rose-950';
+              badgeStyle = 'bg-rose-600 text-white border-rose-600';
+              statusIcon = '<span class="ml-auto text-xs font-bold text-rose-700">✕ Salah (0)</span>';
+            } else {
+              optionStyle = 'border-slate-100 bg-slate-50/50 text-slate-500';
+            }
+          } else if (isSelected) {
+            optionStyle = 'border-purple-600 bg-purple-50 text-purple-950 font-semibold ring-2 ring-purple-200';
+            badgeStyle = 'bg-purple-600 text-white border-purple-600';
+          }
+
+          optionsHtml += `
+            <button
+              type="button"
+              ${isQuizSubmitted ? 'disabled' : ''}
+              onclick="selectAnswer(${q.id}, ${optIdx}, ${qNum})"
+              class="w-full text-left p-3.5 sm:p-4 rounded-2xl border transition-all flex items-center gap-3.5 ${optionStyle}"
+            >
+              <span class="w-8 h-8 rounded-xl border flex items-center justify-center text-xs font-extrabold shrink-0 ${badgeStyle}">
+                ${optionLetters[optIdx]}
+              </span>
+              <span class="text-sm sm:text-base leading-snug">${optText}</span>
+              ${statusIcon}
+            </button>
+          `;
+        });
+
+        // Pembahasan muncul setelah soal dikumpulkan
+        let explanationHtml = '';
+        if (isQuizSubmitted) {
+          const isCorrect = selectedIdx === q.answer;
+          explanationHtml = `
+            <div class="mt-3 p-3.5 rounded-2xl text-xs sm:text-sm ${isCorrect ? 'bg-emerald-50/70 border border-emerald-200 text-emerald-900' : 'bg-amber-50/80 border border-amber-200 text-amber-950'}">
+              <strong>${isCorrect ? '🎉 Tepat Sekali (+20 Poin)!' : '💡 Pembahasan Materi:'}</strong> ${q.explanation}
+            </div>
+          `;
+        }
+
+        card.innerHTML = `
+          <div class="flex items-start gap-3">
+            <span class="px-3 py-1 rounded-xl bg-purple-100 text-purple-800 text-xs font-extrabold shrink-0 mt-0.5">
+              Soal ${qNum} / 10
+            </span>
+            <h4 class="text-base sm:text-lg font-bold text-slate-900 leading-relaxed">
+              ${q.question}
+            </h4>
+          </div>
+          <div class="space-y-2.5 pt-1">
+            ${optionsHtml}
+          </div>
+          ${explanationHtml}
+        `;
+
+        container.appendChild(card);
+      });
+    }
+
+    function selectAnswer(questionId, optionIndex, qNum) {
+      if (isQuizSubmitted) return;
+      userAnswers[questionId] = optionIndex;
+      renderQuestions();
+      updateQuizProgress();
+    }
+
+    function updateQuizProgress() {
+      const answeredCount = Object.keys(userAnswers).length;
+      const progressText = document.getElementById('quiz-progress-text');
+      if (progressText) {
+        progressText.textContent = `${answeredCount} / 10 Terjawab`;
+      }
+    }
+
+    /**
+     * =========================================================================
+     * 7. PENGUMPULAN EVALUASI, SKOR (+20 / 0), & FEEDBACK BANNER DINAMIS
+     * =========================================================================
+     */
+    function submitEvaluation() {
+      if (isQuizSubmitted) return;
+
+      const namaInput = document.getElementById('input-nama');
+      const kelasAbsenInput = document.getElementById('input-kelas-absen');
+      const sekolahInput = document.getElementById('input-sekolah');
+      const warningBox = document.getElementById('identity-warning');
+      const warningText = document.getElementById('identity-warning-text');
+
+      const nama = namaInput.value.trim();
+      const kelasAbsen = kelasAbsenInput.value.trim();
+      const sekolah = sekolahInput.value.trim();
+
+      // Validasi Identitas Peserta Didik
+      if (!nama || !kelasAbsen || !sekolah) {
+        warningBox.classList.remove('hidden');
+        warningText.textContent = 'Mohon lengkapi Identitas Peserta Didik (Nama, Kelas / Nomor Absen, dan Nama Sekolah) sebelum mengumpulkan!';
+        namaInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        if (!nama) namaInput.focus();
+        else if (!kelasAbsen) kelasAbsenInput.focus();
+        else sekolahInput.focus();
+        return;
+      } else {
+        warningBox.classList.add('hidden');
+      }
+
+      // Cek apakah semua 10 soal sudah dijawab
+      const answeredCount = Object.keys(userAnswers).length;
+      if (answeredCount < 10) {
+        openConfirmModal(
+          `📝 Masih Ada ${10 - answeredCount} Soal Belum Dijawab`,
+          `Kamu baru menjawab ${answeredCount} dari 10 soal. Soal yang tidak dijawab akan bernilai 0 poin. Apakah kamu yakin ingin mengumpulkan sekarang?`,
+          () => finalizeEvaluationSubmission(nama, kelasAbsen, sekolah)
+        );
+        return;
+      }
+
+      finalizeEvaluationSubmission(nama, kelasAbsen, sekolah);
+    }
+
+    function finalizeEvaluationSubmission(nama, kelasAbsen, sekolah) {
+      isQuizSubmitted = true;
+
+      // Hitung Skor: +20 jika benar, 0 jika salah
+      let correctCount = 0;
+      currentQuestions.forEach((q) => {
+        if (userAnswers[q.id] === q.answer) {
+          correctCount++;
+        }
+      });
+
+      const wrongCount = 10 - correctCount;
+      const totalScore = correctCount * 20;
+
+      // Simpan ke Spreadsheet Records
+      const now = new Date();
+      const formattedTime = now.toLocaleDateString('id-ID', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+      }) + ', ' + now.toLocaleTimeString('id-ID', {
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+
+      const newRecord = {
+        id: 'rec-' + Date.now(),
+        timestamp: formattedTime,
+        nama: nama,
+        kelasAbsen: kelasAbsen,
+        sekolah: sekolah,
+        correctCount: correctCount,
+        wrongCount: wrongCount,
+        score: totalScore,
+        status: 'Selesai'
+      };
+
+      studentRecords.unshift(newRecord);
+      saveRecordsToStorage();
+
+      // Render ulang soal dengan kunci & pembahasan
+      renderQuestions();
+
+      // Nonaktifkan tombol submit agar tidak klik ganda tidak sengaja
+      const submitBtn = document.getElementById('btn-submit-quiz');
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+      }
+
+      // Tampilkan Pesan Umpan Balik (Feedback Banner) Dinamis yang merujuk Halaman Menu & Halaman Materi
+      renderDynamicFeedbackBanner(nama, kelasAbsen, sekolah, correctCount, wrongCount, totalScore);
+
+      showToast('🎉', `Tugas berhasil dikumpulkan! Skor kamu: ${totalScore} poin.`);
+    }
+
+    function renderDynamicFeedbackBanner(nama, kelasAbsen, sekolah, correctCount, wrongCount, totalScore) {
+      const banner = document.getElementById('feedback-banner');
+      if (!banner) return;
+
+      let themeClass = '';
+      let badgeText = '';
+      let headline = '';
+      let dynamicMessage = '';
+
+      if (totalScore >= 160) {
+        // Kategori Sangat Baik (8-10 benar)
+        themeClass = 'bg-gradient-to-br from-purple-50 via-white to-emerald-50 border-emerald-300 text-slate-900';
+        badgeText = '🏆 Capaian Sangat Baik • Mahir Struktur Pemerintahan';
+        headline = `Luar Biasa, ${nama}! Kamu Berhasil Menyelesaikan Tugas Evaluasi!`;
+        dynamicMessage = `Selamat! Berdasarkan capaian tujuan pembelajaran di <strong>Halaman Menu</strong> serta studi kasus PBL di <strong>Halaman Materi</strong>, kamu telah sangat mahir mengidentifikasi komponen hierarki struktur pemerintahan mulai dari <strong>Pemerintah Pusat (Presiden)</strong> hingga <strong>Pemerintah Daerah Terendah (Kepala Desa/Lurah & RT/RW)</strong>. Nilaimu sudah otomatis tercatat di Spreadsheet Guru.`;
+      } else if (totalScore >= 100) {
+        // Kategori Baik (5-7 benar)
+        themeClass = 'bg-gradient-to-br from-purple-50 via-white to-indigo-50 border-purple-300 text-slate-900';
+        badgeText = '🌟 Capaian Baik • Terus Tingkatkan Pemahaman';
+        headline = `Kerja Bagus, ${nama}! Tugas Evaluasimu Sudah Terkumpul!`;
+        dynamicMessage = `Kamu sudah memahami sebagian besar alur pemerintahan dari pusat ke daerah. Untuk menyempurnakan pemahamanmu sesuai target di <strong>Halaman Menu</strong>, yuk tinjau kembali bagan hierarki dan video YouTube di <strong>Halaman Materi</strong> (terutama perbedaan tugas Bupati/Wali Kota, Camat, dan Kepala Desa/Lurah), lalu kamu bisa mencoba latihan baru lewat tombol <strong>Reset Stage</strong>.`;
+      } else {
+        // Kategori Perlu Bimbingan (0-4 benar)
+        themeClass = 'bg-gradient-to-br from-amber-50 via-white to-purple-50 border-amber-300 text-slate-900';
+        badgeText = '💪 Tetap Semangat Belajar • Ayo Ulangi Materi PBL';
+        headline = `Terima Kasih Sudah Berusaha, ${nama}!`;
+        dynamicMessage = `Tugasmu sudah masuk ke rekap nilai, namun skormu masih perlu ditingkatkan agar mencapai tujuan pembelajaran pada <strong>Halaman Menu</strong>. Yuk kembali ke <strong>Halaman Materi</strong> untuk menonton video pembelajaran YouTube dan membaca kembali studi kasus Pak Budi dari tingkat RT/RW hingga Presiden, lalu klik <strong>Reset Stage</strong> untuk berlatih lagi!`;
+      }
+
+      banner.className = `rounded-3xl p-6 sm:p-7 border-2 shadow-md transition-all space-y-4 ${themeClass}`;
+      banner.innerHTML = `
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-purple-100 pb-4">
+          <div class="space-y-1.5">
+            <span class="inline-block px-3 py-1 rounded-full bg-purple-100 text-purple-800 text-xs font-extrabold">
+              ${badgeText}
+            </span>
+            <h3 class="text-xl sm:text-2xl font-extrabold text-slate-900">${headline}</h3>
+            <p class="text-xs sm:text-sm text-slate-600">
+              Identitas: <strong>${nama}</strong> (${kelasAbsen}) • ${sekolah}
+            </p>
+          </div>
+
+          <!-- Kotak Skor Besar -->
+          <div class="bg-white rounded-2xl px-5 py-3.5 border border-purple-200 shadow-xs text-center shrink-0">
+            <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Total Skor Kamu</p>
+            <p class="text-3xl font-extrabold text-purple-700">${totalScore} <span class="text-sm font-semibold text-slate-400">/ 200</span></p>
+            <p class="text-xs font-semibold mt-0.5">
+              <span class="text-emerald-600">Benar: ${correctCount} (+${correctCount * 20})</span> •
+              <span class="text-rose-500">Salah: ${wrongCount} (0)</span>
+            </p>
+          </div>
+        </div>
+
+        <p class="text-sm sm:text-base text-slate-700 leading-relaxed">
+          ${dynamicMessage}
+        </p>
+
+        <!-- Tombol Navigasi Cepat dari Feedback Banner ke Halaman Menu, Materi, & Spreadsheet -->
+        <div class="flex flex-wrap items-center gap-2.5 pt-1">
+          <button onclick="navigateTo('menu')" class="px-4 py-2.5 rounded-xl bg-white hover:bg-purple-50 text-purple-700 border border-purple-200 font-bold text-xs sm:text-sm transition-colors">
+            🏠 Kembali ke Halaman Menu
+          </button>
+          <button onclick="navigateTo('materi')" class="px-4 py-2.5 rounded-xl bg-purple-100 hover:bg-purple-200 text-purple-900 font-bold text-xs sm:text-sm transition-colors">
+            📖 Pelajari Ulang Halaman Materi
+          </button>
+          <button onclick="navigateTo('spreadsheet')" class="px-4 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs sm:text-sm transition-colors">
+            📊 Lihat Hasil di Spreadsheet
+          </button>
+        </div>
+      `;
+
+      banner.classList.remove('hidden');
+      banner.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    /**
+     * =========================================================================
+     * 8. HALAMAN SPREADSHEET: RENDER, RESET PER INDIVIDU, HAPUS GANDA, DOWNLOAD
+     * =========================================================================
+     */
+    function renderSpreadsheet() {
+      const tbody = document.getElementById('spreadsheet-body');
+      const searchInput = document.getElementById('search-spreadsheet');
+      if (!tbody) return;
+
+      const keyword = searchInput ? searchInput.value.toLowerCase().trim() : '';
+
+      const filtered = studentRecords.filter((rec) => {
+        return (
+          rec.nama.toLowerCase().includes(keyword) ||
+          rec.kelasAbsen.toLowerCase().includes(keyword) ||
+          rec.sekolah.toLowerCase().includes(keyword)
+        );
+      });
+
+      // Update Kartu Statistik
+      const totalEl = document.getElementById('stat-total');
+      const avgEl = document.getElementById('stat-avg');
+      const maxEl = document.getElementById('stat-max');
+      const resetEl = document.getElementById('stat-reset');
+
+      if (totalEl) totalEl.textContent = studentRecords.length;
+      if (avgEl) {
+        const activeScores = studentRecords.filter(r => r.status !== 'Direset').map(r => r.score);
+        const avg = activeScores.length ? Math.round(activeScores.reduce((a, b) => a + b, 0) / activeScores.length) : 0;
+        avgEl.textContent = avg;
+      }
+      if (maxEl) {
+        const maxScore = studentRecords.length ? Math.max(...studentRecords.map(r => r.score)) : 0;
+        maxEl.textContent = maxScore;
+      }
+      if (resetEl) {
+        const resetCount = studentRecords.filter(r => r.status === 'Direset').length;
+        resetEl.textContent = resetCount;
+      }
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="9" class="py-10 px-4 text-center text-slate-500">
+              <p class="text-base font-bold text-slate-700">Belum ada data pengerjaan siswa yang ditemukan.</p>
+              <p class="text-xs mt-1">Silakan arahkan siswa ke Halaman Evaluasi untuk mengerjakan dan mengumpulkan tugas.</p>
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map((rec, index) => {
+        const isReset = rec.status === 'Direset';
+        const statusBadge = isReset
+          ? '<span class="px-2.5 py-1 rounded-full bg-amber-100 text-amber-800 text-xs font-bold">Direset (Gangguan)</span>'
+          : '<span class="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold">Selesai</span>';
+
+        return `
+          <tr class="hover:bg-purple-50/50 transition-colors ${isReset ? 'bg-amber-50/30' : ''}">
+            <td class="py-3 px-4 border-r border-purple-100 text-center font-bold text-slate-500">${index + 1}</td>
+            <td class="py-3 px-4 border-r border-purple-100 text-xs text-slate-500 whitespace-nowrap">${rec.timestamp}</td>
+            <td class="py-3 px-4 border-r border-purple-100 font-bold text-slate-900">${escapeHtml(rec.nama)}</td>
+            <td class="py-3 px-4 border-r border-purple-100 text-slate-700 whitespace-nowrap">${escapeHtml(rec.kelasAbsen)}</td>
+            <td class="py-3 px-4 border-r border-purple-100 text-slate-700">${escapeHtml(rec.sekolah)}</td>
+            <td class="py-3 px-4 border-r border-purple-100 text-center whitespace-nowrap">
+              <span class="text-emerald-600 font-bold">${rec.correctCount} B</span> /
+              <span class="text-rose-500 font-bold">${rec.wrongCount} S</span>
+            </td>
+            <td class="py-3 px-4 border-r border-purple-100 text-center font-extrabold text-base ${isReset ? 'text-amber-600' : 'text-purple-700'}">
+              ${rec.score}
+            </td>
+            <td class="py-3 px-4 border-r border-purple-100 text-center whitespace-nowrap">
+              ${statusBadge}
+            </td>
+            <td class="py-3 px-4 text-center whitespace-nowrap">
+              <div class="inline-flex items-center gap-1.5">
+                <button
+                  onclick="confirmResetIndividual('${rec.id}')"
+                  class="px-2.5 py-1.5 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 text-xs font-bold transition-colors"
+                  title="Reset pengerjaan siswa karena gangguan teknis"
+                >
+                  🔄 Reset
+                </button>
+                <button
+                  onclick="confirmDeleteIndividual('${rec.id}')"
+                  class="px-2.5 py-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs font-bold transition-colors"
+                  title="Hapus baris karena pengerjaan double/ganda"
+                >
+                  🗑️ Hapus
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // Fitur Reset Per Individu (Untuk siswa yang mengalami gangguan pengerjaan)
+    function confirmResetIndividual(recordId) {
+      const target = studentRecords.find(r => r.id === recordId);
+      if (!target) return;
+
+      openConfirmModal(
+        '🔄 Reset Pengerjaan Individu?',
+        `Siswa "${target.nama}" (${target.kelasAbsen}) akan direset nilainya menjadi 0 dengan status "Direset (Gangguan)" dan identitasnya siap digunakan untuk mengulang evaluasi. Lanjutkan?`,
+        () => {
+          target.correctCount = 0;
+          target.wrongCount = 0;
+          target.score = 0;
+          target.status = 'Direset';
+          target.timestamp = new Date().toLocaleDateString('id-ID') + ', ' + new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' (Reset)';
+          saveRecordsToStorage();
+          renderSpreadsheet();
+
+          // Siapkan identitas siswa di halaman evaluasi agar mudah mengulang
+          document.getElementById('input-nama').value = target.nama;
+          document.getElementById('input-kelas-absen').value = target.kelasAbsen;
+          document.getElementById('input-sekolah').value = target.sekolah;
+          generateNewStageQuestions();
+
+          showToast('🔄', `Data pengerjaan ${target.nama} berhasil direset untuk ujian ulang.`);
+        }
+      );
+    }
+
+    // Fitur Hapus Per Individu (Untuk siswa yang pengerjaannya double atau ganda)
+    function confirmDeleteIndividual(recordId) {
+      const target = studentRecords.find(r => r.id === recordId);
+      if (!target) return;
+
+      openConfirmModal(
+        '🗑️ Hapus Data Pengerjaan Ganda?',
+        `Apakah Anda yakin ingin menghapus baris data milik "${target.nama}" (${target.kelasAbsen}) secara permanen dari spreadsheet?`,
+        () => {
+          studentRecords = studentRecords.filter(r => r.id !== recordId);
+          saveRecordsToStorage();
+          renderSpreadsheet();
+          showToast('🗑️', `Data ganda milik ${target.nama} telah dihapus.`);
+        }
+      );
+    }
+
+    /**
+     * =========================================================================
+     * 9. AUTENTIKASI PASSWORD GURU ("Idiladha") & DOWNLOAD SPREADSHEET CSV
+     * =========================================================================
+     */
+    function openDownloadPasswordModal() {
+      const modal = document.getElementById('modal-password');
+      const input = document.getElementById('teacher-password-input');
+      const errorMsg = document.getElementById('password-error-msg');
+
+      input.value = '';
+      errorMsg.classList.add('hidden');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      setTimeout(() => input.focus(), 100);
+    }
+
+    function closePasswordModal() {
+      const modal = document.getElementById('modal-password');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function togglePasswordVisibility() {
+      const input = document.getElementById('teacher-password-input');
+      input.type = input.type === 'password' ? 'text' : 'password';
+    }
+
+    function verifyAndDownloadSpreadsheet() {
+      const input = document.getElementById('teacher-password-input');
+      const errorMsg = document.getElementById('password-error-msg');
+      const card = document.getElementById('modal-password-card');
+
+      // Cek password tepat: "Idiladha"
+      if (input.value === 'Idiladha') {
+        errorMsg.classList.add('hidden');
+        closePasswordModal();
+        downloadCSVSpreadsheet();
+      } else {
+        errorMsg.classList.remove('hidden');
+        card.classList.remove('animate-shake');
+        void card.offsetWidth; // trigger reflow animasi
+        card.classList.add('animate-shake');
+        input.focus();
+      }
+    }
+
+    function downloadCSVSpreadsheet() {
+      // Header Spreadsheet
+      const headers = [
+        'No',
+        'Waktu Pengumpulan',
+        'Nama Peserta Didik',
+        'Kelas / Nomor Absen',
+        'Nama Sekolah',
+        'Jumlah Benar',
+        'Jumlah Salah',
+        'Skor Total (+20 Benar / 0 Salah)',
+        'Status Pengerjaan'
+      ];
+
+      const rows = studentRecords.map((rec, idx) => [
+        idx + 1,
+        `"${rec.timestamp}"`,
+        `"${rec.nama.replace(/"/g, '""')}"`,
+        `"${rec.kelasAbsen.replace(/"/g, '""')}"`,
+        `"${rec.sekolah.replace(/"/g, '""')}"`,
+        rec.correctCount,
+        rec.wrongCount,
+        rec.score,
+        `"${rec.status}"`
+      ]);
+
+      // Tambahkan UTF-8 BOM agar Excel dan Google Sheets membaca kolom & karakter Indonesia secara rapi
+      const csvContent = '\uFEFF' + [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+
+      const link = document.createElement('a');
+      const dateStamp = new Date().toISOString().slice(0, 10);
+      link.setAttribute('href', url);
+      link.setAttribute('download', `Spreadsheet_Nilai_Pancasila_Kelas6_${dateStamp}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+
+      showToast('📥', 'Spreadsheet nilai berhasil diunduh!');
+    }
+
+    /**
+     * =========================================================================
+     * 10. MODAL KONFIRMASI KUSTOM & TOAST NOTIFICATION HELPER
+     * =========================================================================
+     */
+    function openConfirmModal(title, message, onConfirm) {
+      const modal = document.getElementById('modal-confirm');
+      document.getElementById('confirm-title').textContent = title;
+      document.getElementById('confirm-message').textContent = message;
+      pendingConfirmCallback = onConfirm;
+
+      const actionBtn = document.getElementById('confirm-action-btn');
+      actionBtn.onclick = () => {
+        closeConfirmModal();
+        if (typeof pendingConfirmCallback === 'function') {
+          pendingConfirmCallback();
+        }
+      };
+
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeConfirmModal() {
+      const modal = document.getElementById('modal-confirm');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    let toastTimer = null;
+    function showToast(icon, message) {
+      const toast = document.getElementById('toast-notification');
+      document.getElementById('toast-icon').textContent = icon;
+      document.getElementById('toast-text').textContent = message;
+
+      toast.classList.remove('hidden');
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        toast.classList.add('hidden');
+      }, 3500);
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+  </script>
+</body>
+</html>
